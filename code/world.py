@@ -1,5 +1,25 @@
+from dataclasses import dataclass
 from memoization import cached
 from math import floor
+from typing import Union
+
+
+@dataclass
+class Move:
+    type = "move"
+    target_x: int
+    target_y: int
+    comment: str = ""
+
+
+@dataclass
+class Attack:
+    type = "attack"
+    target_id: int
+    comment: str = ""
+
+
+Action = Union[Move, Attack]
 
 
 class Hero:
@@ -64,12 +84,13 @@ class Hero:
 
 
 class Monster:
-    def __init__(self, x: int, y: int, hp: int, gold: int, xp: int):
+    def __init__(self, x: int, y: int, hp: int, gold: int, xp: int, id: int):
         self.x = x
         self.y = y
         self.hp = hp
         self.gold = gold
         self.xp = xp
+        self.id = id
 
 
 class World:
