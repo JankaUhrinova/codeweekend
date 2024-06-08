@@ -3,9 +3,8 @@ from world import Action, Hero, Monster, World
 
 
 def read_input(filename: str):
-    f = open(filename)
-
-    info = json.load(f)
+    with open(filename) as f:
+        info = json.load(f)
 
     # Hero initialization
     hero_info = info["hero"]
