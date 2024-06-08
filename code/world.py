@@ -1,3 +1,7 @@
+from memoization import cached
+from math import floor
+
+
 class Hero:
     def __init__(
         self,
@@ -20,6 +24,43 @@ class Hero:
         self.range_coef = range_coef
         self.xp = 0
         self.gold = 0
+
+        self._level = 0
+
+    # For level L, an additional 1000 + L ⋅ (L − 1) ⋅ 50 experience points are required
+    # after reaching the previous level.
+    @cached
+    @staticmethod
+    def level_xp(level: int) -> int:
+        if level == 0:
+            return 0
+
+        return Hero.level_xp(level - 1) + 1000 + level * (level - 1) * 50
+
+    @property
+    def xp_needed(self) -> int:
+        return Hero.level_xp(self.level + 1) - self.xp
+
+    @property
+    def level(self) -> int:
+        while self.xp >= Hero.level_xp(self._level + 1):
+            self._level += 1
+        return self._level
+
+    # moves with a speed of ⌊ base_speed ⋅ (1 + L ⋅ level_speed_coeff / 100) ⌋
+    @property
+    def speed(self) -> int:
+        return floor(self.base_speed * (1 + self.level * self.speed_coef / 100))
+
+    # attacks with a power of ⌊ base_power ⋅ (1 + L ⋅ level_power_coeff / 100 ) ⌋
+    @property
+    def power(self) -> int:
+        return floor(self.base_power * (1 + self.level * self.power_coef / 100))
+
+    # has an attack range of ⌊ base_range ⋅ (1 + L ⋅ level_range_coeff / 100 ) ⌋
+    @property
+    def attack_range(self) -> int:
+        return floor(self.base_range * (1 + self.level * self.range_coef / 100))
 
 
 class Monster:
