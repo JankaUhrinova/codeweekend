@@ -1,5 +1,6 @@
 import json
-from world import Action, Hero, Monster, World
+from json import encoder
+from code.world import Action, Hero, Monster, World
 
 
 def read_input(filename: str):
@@ -41,7 +42,13 @@ def read_input(filename: str):
     return world
 
 
-def print_output(filename: str, actions: list[Action]):
+def write_output(filename: str, actions: list[Action]):
 
     with open(filename, "w+") as f:
+        for a in actions:
+            if a.type == "move":
+                a.target_x = int(a.target_x)
+                a.target_y = int(a.target_y)
+            elif a.type == "attack":
+                a.target_id = int(a.target_id)
         json.dump({"moves": actions}, f, indent=4, default=vars)

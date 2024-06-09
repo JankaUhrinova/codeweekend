@@ -6,17 +6,17 @@ from typing import Union
 
 @dataclass
 class Move:
-    type = "move"
     target_x: int
     target_y: int
     comment: str = ""
+    type: str = "move"
 
 
 @dataclass
 class Attack:
-    type = "attack"
     target_id: int
     comment: str = ""
+    type: str = "attack"
 
 
 Action = Union[Move, Attack]
@@ -91,6 +91,14 @@ class Monster:
         self.gold = gold
         self.xp = xp
         self.id = id
+
+    @property
+    def is_alive(self) -> bool:
+        return self.hp > 0
+
+    @property
+    def is_dead(self) -> bool:
+        return not self.is_alive
 
 
 class World:
