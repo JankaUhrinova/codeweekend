@@ -41,7 +41,7 @@ def run_solver_on_file(
 
     if run_data.error:
         print(f"Solver failed on {input_file} with error: {run_data.error}")
-        return
+        return run_data
 
     print(f"Solved {input_file} with score {run_data.score}")
 
